@@ -134,6 +134,10 @@ def generate_qc_file(args: argparse.ArgumentParser.parse_args):
         qc_values['ivar_md'] = args.ivar_md
         column_names.insert(-1, 'ivar_md')
 
+    # === Check min_mapped_reads threshold before writing ===
+    if int(qc_values['total_mapped_reads']) < args.min_mapped_reads:
+        return  #skip writing to file
+    
     # Write output header & QC columns to a CSV file
     with open(args.outfile, 'w') as csvfile:
         header = column_names
@@ -164,6 +168,8 @@ def main():
     parser.add_argument('--ivar_md', required=False, type=int, default=None,
         help='''Minimum depth value used for ivar when generating the consensus
                 file given by the --fasta argument, optional.''')
+    parser.add_argument('--min_mapped_reads', required=False, type=int, default=100,
+                        help='''Minimum number of total_mapped_reads to write output, default=100''')
 
     args = parser.parse_args()
     generate_qc_file(args)

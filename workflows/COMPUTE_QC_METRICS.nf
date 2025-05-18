@@ -49,7 +49,7 @@ workflow COMPUTE_QC_METRICS {
             | map {meta, fasta_file ->
                 // store fasta_files at meta
                 meta.consensus_fa = fasta_file
-                tuple(meta, meta.bam_file, fasta_file, meta.ref_files[0], meta.mpileup_file)
+                tuple(meta, meta.bam_file, fasta_file, meta.ref_files[0], meta.mpileup_file, params.min_mapped_reads)
             }
             | set{qc_script_In_ch}
 

@@ -1,5 +1,6 @@
 // Copyright (C) 2023 Genome Surveillance Unit/Genome Research Ltd.
-params.qc_minimum_depth = 10
+params.qc_minimum_depth = 
+params.min_mapped_reads = params.min_mapped_reads ?: 100
 
 process run_qc_script {
     /*
@@ -69,6 +70,7 @@ process run_qc_script {
         --flagstat_file ${samtools_flagstat} \
         --minimum_depth ${params.qc_minimum_depth} \
         --ivar_md ${params.ivar_min_depth}
+        --min_mapped_reads ${params.min_mapped_reads}
 
     # Print first row of output file to stdout
     sed -n "2p" ${meta.id}.qc.csv
